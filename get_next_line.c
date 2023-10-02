@@ -51,7 +51,10 @@ char *get_next_line(int fd)
 	if (!str)
 		return (NULL);
 	line = ft_get_line(fd, str, res);
+	free(str);
+	str = NULL;
 	if (!line)
 		return (NULL);
-	return (res);
+
+	return (line);
 }
