@@ -12,9 +12,10 @@
 
 #include "get_next_line.h"
 
-char *ft_get_line(int fd, char *str)
+char *ft_get_line(int fd, char *str, char *res)
 {
-	int	line;
+	int		line;
+	char	*str_aux;
 
 	line = 1;
 	while (line != '\0')
@@ -24,10 +25,29 @@ char *ft_get_line(int fd, char *str)
 			return (NULL);
 		if (line == 0)
 			break;
-		
+		res[line] = '\0';
+		if (!res)
+			res = ft_strdup("");
+		str_aux = res;
+		res = ft_strjoin(str_aux, str);
+		free(str_aux);
+		str_aux = NULL;
+		if (ft_strchr(buf, '\n'))
+			break;
 	}
-	
-	
+	return (res);
+}
+
+static char	ft_extract_line(char *line)
+{
+	int	i;
+	char	*str;
+
+	i = 0;
+	while(line[i] && line[i] != '\n')
+		i++;
+	if (line[i] == '\0')
+		return (NULL);
 }
 
 
@@ -42,7 +62,11 @@ char *get_next_line(int fd)
 	str = (char * )malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!str)
 		return (NULL);
-	line = ft_get_line(fd, str);
-	
-	return (res);
+	line = ft_get_line(fd, str, res);
+	free(str);
+	str = NULL;
+	if (!line)
+		return (NULL);
+
+	return (line);
 }
