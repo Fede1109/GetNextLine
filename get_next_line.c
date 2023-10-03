@@ -67,6 +67,6 @@ char *get_next_line(int fd)
 	str = NULL;
 	if (!line)
 		return (NULL);
-
+	
 	return (line);
 }
