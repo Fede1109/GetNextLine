@@ -6,11 +6,21 @@
 /*   By: fdiaz-gu <fdiaz-gu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:37:31 by fdiaz-gu          #+#    #+#             */
-/*   Updated: 2023/10/05 11:49:33 by fdiaz-gu         ###   ########.fr       */
+/*   Updated: 2023/10/05 12:33:45 by fdiaz-gu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
@@ -51,7 +61,11 @@ char	*ft_strdup(const char *s1)
 	ptr = (char *)malloc(size_len + 1);
 	if (ptr == NULL)
 		return (NULL);
-	ft_memcpy(ptr, s1, size_len);
+	while (i < size_len)
+	{
+		ptr[i] = s1[i];
+		i++;
+	}
 	ptr[size_len] = '\0';
 	return (ptr);
 }
@@ -75,31 +89,26 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-size_t	ft_strlen(const char *str)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	size_t	i;
+	size_t	j;
+	char	*str;
 
+	str = (char *)malloc(sizeof(*s) * (len + 1));
+	if (str == 0)
+		return (NULL);
 	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	char		*d;
-	const char	*s;
-	size_t		i;
-
-	i = 0;
-	d = dst;
-	s = src;
-	if (!dst && !src)
-		return (dst);
-	while (i < n)
+	j = 0;
+	while (s[i])
 	{
-		d[i] = s[i];
+		if (i >= start && j < len)
+		{
+			str[j] = s[i];
+			j++;
+		}
 		i++;
 	}
-	return (dst);
+	str[j] = 0;
+	return (str);
 }
