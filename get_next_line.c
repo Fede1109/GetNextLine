@@ -6,7 +6,7 @@
 /*   By: fdiaz-gu <fdiaz-gu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:37:41 by fdiaz-gu          #+#    #+#             */
-/*   Updated: 2023/10/05 11:50:03 by fdiaz-gu         ###   ########.fr       */
+/*   Updated: 2023/10/05 12:43:52 by fdiaz-gu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,28 @@ char	*ft_read_line(int fd, char *buff)
 	return (str_aux);
 }
 
+char	*ft_get_lines(char *str)
+{
+	int		i;
+	char	*res;
+
+	i = 0;
+	if (!str)
+		return (NULL);
+	while (str[i] || str[i] != '\n')
+		i++;
+	if (str[i] == '\0')
+		return (0);
+	res = ft_substr(str, i + 1, ft_strlen(str) - i);
+	if (*res == '\0')
+	{
+		free(res);
+		res = NULL;
+	}
+	str[i + 1] = '\0';
+	return (res);
+}
+
 char	*get_next_line(int fd)
 {
 	char		*str;
@@ -42,11 +64,17 @@ char	*get_next_line(int fd)
 	if (!buff)
 		return (NULL);
 	buff = ft_read_line(fd, buff);
+	free(buff);
+	buff = NULL;
+	if (!buff)
+		return (NULL);
+	str = ft_get_lines(buff);
 	return (buff);
 }
 
 /*
 1. Añadir protecciones al str_join
 2. Meter el memcpy
+TODO:
 3. Función los trozos que sobran
 */
