@@ -6,67 +6,43 @@
 /*   By: fdiaz-gu <fdiaz-gu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:37:41 by fdiaz-gu          #+#    #+#             */
-/*   Updated: 2023/10/02 18:35:55 by fdiaz-gu         ###   ########.fr       */
+/*   Updated: 2023/10/05 11:18:19 by fdiaz-gu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char *ft_get_line(int fd, char *str, char *res)
+char	*ft_read_line(int fd, char *buff)
 {
-	int		line;
+	int		reader;
 	char	*str_aux;
+	char	*result;
 
-	line = 1;
-	while (line != '\0')
+	reader = 1;
+	while (reader != 0)
 	{
-		line = read(fd, str, BUFFER_SIZE);
-		if (line == -1)
+		reader = read(fd, buff, BUFFER_SIZE);
+		if (reader == -1)
 			return (NULL);
-		if (line == 0)
-			break;
-		res[line] = '\0';
-		if (!res)
-			res = ft_strdup("");
-		str_aux = res;
-		res = ft_strjoin(str_aux, str);
-		free(str_aux);
-		str_aux = NULL;
-		if (ft_strchr(buf, '\n'))
+		buff[reader] = '\0';
+		result = ft_strjoin(str_aux, buff);
+		if(ft_strchr(buff, '\n'))
 			break;
 	}
-	return (res);
-}
-
-static char	ft_extract_line(char *line)
-{
-	int	i;
-	char	*str;
-
-	i = 0;
-	while(line[i] && line[i] != '\n')
-		i++;
-	if (line[i] == '\0')
-		return (NULL);
+	return (result);
 }
 
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	char	*str;
-	char	*line;
-	char	*res;
+	char		*str;
+	static char	*buff;
 	
     if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
-	str = (char * )malloc(sizeof(char) * BUFFER_SIZE + 1);
-	if (!str)
+	buff = (char * )malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!buff)
 		return (NULL);
-	line = ft_get_line(fd, str, res);
-	free(str);
-	str = NULL;
-	if (!line)
-		return (NULL);
-	
-	return (line);
+	buff = ft_read_line(fd, buff);
+
 }
