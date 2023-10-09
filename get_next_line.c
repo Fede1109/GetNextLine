@@ -6,7 +6,7 @@
 /*   By: fdiaz-gu <fdiaz-gu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:37:41 by fdiaz-gu          #+#    #+#             */
-/*   Updated: 2023/10/09 12:25:55 by fdiaz-gu         ###   ########.fr       */
+/*   Updated: 2023/10/09 13:55:58 by fdiaz-gu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ char	*ft_write_in_aux(int fd, char *aux)
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
+	{
+		free(aux);
 		return (NULL);
+	}	
 	check = 1;
 	while (!(ft_strchr(aux, '\n')) && check != 0)
 	{
@@ -39,17 +42,15 @@ char	*ft_write_in_aux(int fd, char *aux)
 
 char	*get_next_line(int fd)
 {
-	char			*line;
+	char			*line;	
 	static char		*aux;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	aux = ft_write_in_aux(fd, aux);
 	if (!aux)
-	{
 		return (NULL);
-	}
-	line = ft_print_line(aux);
+	line = ft_extract_line(aux);
 	aux = ft_new_static(aux);
 	return (line);
 }
