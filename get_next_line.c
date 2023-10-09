@@ -6,72 +6,58 @@
 /*   By: fdiaz-gu <fdiaz-gu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:37:41 by fdiaz-gu          #+#    #+#             */
-/*   Updated: 2023/10/06 15:02:22 by fdiaz-gu         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:07:21 by fdiaz-gu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_read_line(int fd, char *buff)
+char	*ft_write_in_aux(int fd, char *aux)
 {
-	int		reader;
-	char	*str_aux;
-	char	*temp;
+	char	*buffer;
+	int		check;
 
-	reader = 1;
-	str_aux = ft_strdup("");
-	while (!(ft_strchr(buff, '\n')) && (reader != 0))
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer)
+		return (NULL);
+	check = 1;
+	while (check != 0)
 	{
-		reader = read(fd, buff, BUFFER_SIZE);
-		if (reader == -1)
+		check = read(fd, buffer, BUFFER_SIZE);
+		if (check != -1)
 		{
-			free(str_aux);
+			buffer[check] = '\0';
+			aux = ft_strjoin(aux, buffer);
+		}
+		if (!aux || check == -1)
+		{
+			free(buffer);
 			return (NULL);
-		}		
-		buff[reader] = '\0';
-		temp = ft_strjoin(str_aux, buff);
-		free(str_aux);
-		str_aux = temp;
+		}
+		if (ft_strchr(aux, '\n'))
+			check = 0;
 	}
-	free(buff);
-	return (str_aux);
-}
-
-char	*ft_get_lines(char *str)
-{
-	int		i;
-	char	*res;
-
-	i = 0;
-	if (!str)
-		return (NULL);
-	while (str[i] && str[i] != '\n')
-		i++;
-	if(str[i] == '\0')
-		return (0);
-	res = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
-	if (!res)
-		return (NULL);
-	return (res);
+	free(buffer);
+	return (aux);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*str;
-	static char	*buff;
+	char			*line;
+	static char		*aux;
 
+	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!buff)
-	{
-		buff = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		if (!buff)
-			return (NULL);
-	}	
-	buff = ft_read_line(fd, buff);
-	if (!buff)
+	aux = ft_write_in_aux(fd, aux);
+	if (!aux)
 		return (NULL);
-	str = ft_get_lines(buff);
-	return (str);
+	line = ft_print_line(aux);	
+	aux = ft_new_static(aux);
+	if (!aux)
+	{
+		free(aux);
+		aux = NULL;
+	}
+	return (line);
 }
-
