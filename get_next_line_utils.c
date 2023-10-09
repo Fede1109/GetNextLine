@@ -6,7 +6,7 @@
 /*   By: fdiaz-gu <fdiaz-gu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:37:31 by fdiaz-gu          #+#    #+#             */
-/*   Updated: 2023/10/09 12:13:36 by fdiaz-gu         ###   ########.fr       */
+/*   Updated: 2023/10/09 12:24:20 by fdiaz-gu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,22 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	i = -1;
 	j = -1;
-	if (!s1)
+	if (!s1 || !s2)
 	{
 		s1 = malloc(sizeof(char) * 1);
-		if (!s1)
+		if (!s1 || !s2)
 			return (NULL);
 		s1[0] = '\0';
 	}
-	if (!s1 || !s2)
-		return (NULL);
 	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (!str)
-		return (NULL);
-	while (s1[++i] != '\0')
-		str[i] = s1[i];
-	while (s2[++j] != '\0')
-		str[i + j] = s2[j];
-	str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
+	if (str)
+	{
+		while (s1[++i] != '\0')
+			str[i] = s1[i];
+		while (s2[++j] != '\0')
+			str[i + j] = s2[j];
+		str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
+	}
 	free(s1);
 	return (str);
 }
@@ -44,18 +43,16 @@ char	*ft_strjoin(char *s1, char *s2)
 char	*ft_print_line(char *str)
 {
 	int		i;
-	int		extra;
 	char	*ret;
 
 	i = 0;
-	extra = 1;
 	if (!str[i])
 		return (NULL);
 	while (str[i] && str[i] != '\n')
 		i++;
 	if (str[i] == '\n')
-		extra++;
-	ret = malloc(sizeof(char) * (i + extra));
+		i++;
+	ret = malloc(sizeof(char) * (i + 1));
 	if (!ret)
 		return (NULL);
 	i = -1;
@@ -116,8 +113,11 @@ char	*ft_new_static(char *aux)
 		return (NULL);
 	}
 	ret = malloc(sizeof(char) * (ft_strlen(aux) - i + 1));
-	if (!ret)
+	if (ret == NULL)
+	{
+		free(aux);
 		return (NULL);
+	}
 	i++;
 	j = 0;
 	while (aux[i] != '\0')
