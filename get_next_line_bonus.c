@@ -6,7 +6,7 @@
 /*   By: fdiaz-gu <fdiaz-gu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 13:48:38 by fdiaz-gu          #+#    #+#             */
-/*   Updated: 2023/10/09 13:56:09 by fdiaz-gu         ###   ########.fr       */
+/*   Updated: 2023/10/10 12:11:41 by fdiaz-gu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ char	*ft_write_in_aux(int fd, char *aux)
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
-	{
-		free(aux);
 		return (NULL);
-	}	
 	check = 1;
 	while (!(ft_strchr(aux, '\n')) && check != 0)
 	{
