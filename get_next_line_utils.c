@@ -6,7 +6,7 @@
 /*   By: fdiaz-gu <fdiaz-gu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 14:37:31 by fdiaz-gu          #+#    #+#             */
-/*   Updated: 2023/10/10 11:50:34 by fdiaz-gu         ###   ########.fr       */
+/*   Updated: 2023/10/10 12:11:56 by fdiaz-gu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,6 @@ char	*ft_new_static(char *aux)
 	while (aux[i] != '\0')
 		ret[j++] = aux[i++];
 	ret[j] = '\0';
-	free(aux);	
+	free(aux);
 	return (ret);
 }
